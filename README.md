@@ -1,71 +1,69 @@
-# Academic Calendar Generator
+# Academic Calendar Generator Documentation
 
 ## Table of Contents
 
 1. [Overview](#overview)
 2. [Dependencies](#dependencies)
 3. [Input Files](#input-files)
-    - [courses.csv](#coursescsv)
-    - [exceptions.csv](#exceptionscsv)
-4. [How it Works](#how-it-works)
+4. [Script Structure and Functions](#script-structure-and-functions)
 5. [Running the Script](#running-the-script)
+6. [Output](#output)
+7. [Logging](#logging)
 
 ## Overview
 
-This Python script generates an academic calendar in iCal format (.ics), which can be imported into various calendar applications. The script takes two CSV files as input: one for the course schedule and another for exceptions like holidays or special events.
+This Python script generates a comprehensive academic calendar in iCal format (.ics), suitable for importing into various calendar applications. It efficiently processes course schedules and exceptions (like holidays or special events), handling complex scenarios like date ranges and schedule conversions.
 
 ## Dependencies
 
-- `icalendar`: iCal file generation.
-- `datetime`: Date-time manipulation.
-- `csv`: Reading CSV files.
-- `re`: Regular expression operations.
+- `icalendar`: For creating iCal format files.
+- `datetime`: For date and time operations.
+- `csv`: To read CSV input files.
+- `re`: For regular expression operations.
+- `os`: For directory and file operations.
+- `logging`: For logging script activities and issues.
 
 ## Input Files
 
 ### `courses.csv`
 
-This CSV should contain course details with the following columns:
-
-- `Course Code`: e.g., "MATH101"
-- `Course Title`: e.g., "Basic Mathematics"
-- `Days`: e.g., "Mon, Wed"
-- `Start Time`: e.g., "9:00 AM"
-- `End Time`: e.g., "10:30 AM"
-- `Start Date`: e.g., "1/10/2023"
-- `End Date`: e.g., "5/20/2023"
-- `Room`: e.g., "Room 101"
-- `Instructor`: e.g., "John Doe"
+Contains details for each course with columns like `Course Code`, `Course Title`, `Days`, `Start Time`, `End Time`, `Start Date`, `End Date`, `Room`, and `Instructor`.
 
 ### `exceptions.csv`
 
-This CSV should list exception days:
+Lists exceptions with `Type`, `Dates` (single or range), and `Description`. Conversion days should include the target day within the description (e.g., "Conversion to Monday schedule").
 
-- `Type`: e.g., "Closed", "Conversion"
-- `Date`: e.g., "11/25/2023"
-- `Description`: e.g., "Thanksgiving"
+## Script Structure and Functions
 
-#### Formatting Conversion Days
+- **`read_csv(file_name)`:** Reads CSV files and processes date ranges in `exceptions.csv`.
+- **`create_standard_week(courses)`:** Forms a standard week schedule from course data.
+- **`add_event_to_calendar(cal, course, date)`:** Adds individual course events to the calendar.
+- **`add_full_day_event_to_calendar(cal, date, description, summary)`:** Adds full-day events for exceptions.
+- **`main()`:** Orchestrates the calendar creation process, handling standard courses and exceptions, including conversion days, and outputs the final combined calendar.
 
-For conversion days, the description must contain the target day to which the schedule will convert, encapsulated within parentheses. For example, for a conversion to a Monday schedule, the description might be "Conversion (Mon)".
+### Calendar Creation Process
 
-## How it Works
-
-1. **Data Import**: Reads both `courses.csv` and `exceptions.csv`.
-2. **Week Setup**: Forms a standard week schedule.
-3. **Calendar Loop**: Iterates through each day from start to end.
-    - Checks for exceptions.
-    - Processes exceptions or adds scheduled courses.
-4. **iCal Export**: Outputs `your_calendar.ics`.
-
-### Parsing Details
-
-- **Conversion Days**: The script uses regular expressions to look for a three-letter day abbreviation in the "Description" field of the `exceptions.csv` for conversion days. Make sure to format these correctly for accurate conversions.
+1. **Data Import:** Reads `courses.csv` and `exceptions.csv`.
+2. **Standard Week Setup:** Forms a weekly schedule template.
+3. **Exception Handling:** Processes exceptions, including conversion days.
+4. **Calendar Assembly:** Compiles individual course calendars and the exceptions calendar into a combined calendar.
+5. **File Output:** Saves the combined calendar in iCal format.
 
 ## Running the Script
 
-To run the script, use the following command:
+To execute the script, run:
 
 ```bash
 python your_script_name.py
 ```
+
+## Output
+
+- The script generates an `output` directory containing the `combined_calendar.ics` file, which integrates all course schedules and exceptions.
+- Individual calendars for each course are also created and integrated into the combined calendar.
+
+## Logging
+
+- The script logs all major steps and issues in `calendar_creator.log`, aiding in troubleshooting and ensuring transparency in the process.
+
+This documentation should provide clear guidance on the usage and inner workings of the Academic Calendar Generator script. Feel free to reach out if you encounter any issues or require further assistance.

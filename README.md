@@ -1,90 +1,97 @@
 # Calendar Creator README
 
 ## Overview
-Calendar Creator is a Python application that generates an iCalendar (.ics) file from course schedules and exception dates provided in CSV format. It is designed for educational institutions to ease the process of calendar event management for course schedules, including handling exceptions such as holidays or special events.
+The Calendar Creator is a robust Python application tailored for educational institutions to streamline the creation of iCalendar (.ics) files, encapsulating comprehensive course schedules and exception dates. The application adeptly manages standard course events, exceptions such as holidays, and conversion days where a different schedule is to be followed.
 
 ## System Requirements
 - Python 3.x
-- `icalendar` library
+- `icalendar` Python library
 
 ## Installation
-Ensure that Python 3.x is installed on your system. If you do not have the `icalendar` library installed, you can install it using pip:
+To ensure a smooth installation process, verify the presence of Python 3.x on your system. If not already installed, acquire the required `icalendar` library using the following command:
 
 ```bash
 pip install icalendar
 ```
 
-## Usage
-1. Prepare your CSV files: `courses.csv` and `exceptions.csv`. Place them in the same directory as the script.
-2. Run the script:
+## Usage Instructions
+1. Populate your CSV files, `courses.csv` for the course schedules and `exceptions.csv` for exception dates, adhering to the predefined formats.
+2. Station these files in the same directory as the script for optimal performance.
+3. Initiate the script execution using:
+
 ```bash
 python calendar_creator.py
 ```
-3. The script will generate an `output` directory that contains the `combined_calendar.ics` file.
 
-## Input CSV File Format
+4. The application meticulously generates the `output` directory, which houses the collective `combined_calendar.ics` file.
 
-### Courses CSV (`courses.csv`)
-This CSV file should contain the course schedule with the following headers:
+## Input Data Structure
+
+### Course Schedule CSV (`courses.csv`)
+Structure the course schedule CSV with the following column headers:
 
 - Course Code
 - Course Title
-- Start Date (MM/DD/YYYY)
-- End Date (MM/DD/YYYY)
-- Days (e.g., Monday, Tuesday, Wednesday)
-- Start Time (HH:MM AM/PM)
-- End Time (HH:MM AM/PM)
+- Start Date (in MM/DD/YYYY format)
+- End Date (in MM/DD/YYYY format)
+- Days (full weekdays such as Monday, Tuesday)
+- Start Time (in HH:MM AM/PM format)
+- End Time (in HH:MM AM/PM format)
 - Instructor
 - Room
 
-Example:
+Representative Example:
 ```
-| Course Code | Course Title | Start Date  | End Date    | Days       | Start Time | End Time   | Instructor | Room |
-|-------------|--------------|-------------|-------------|------------|------------|------------|------------|------|
-| MATH101     | Calculus I   | 01/15/2023  | 05/25/2023  | Monday, Wednesday, Friday   | 09:00 AM   | 10:30 AM   | Jane Doe   | 101  |
+| Course Code | Course Title | Start Date  | End Date    | Days                  | Start Time | End Time   | Instructor | Room |
+|-------------|--------------|-------------|-------------|-----------------------|------------|------------|------------|------|
+| MATH101     | Calculus I   | 01/15/2023  | 05/25/2023  | Monday, Wednesday, Friday | 09:00 AM   | 10:30 AM   | Jane Doe   | 101  |
 ```
 
-### Exceptions CSV (`exceptions.csv`)
-This CSV file should contain exception dates such as holidays or non-standard class schedules with the following headers:
+### Exception Dates CSV (`exceptions.csv`)
+The exception dates CSV should encapsulate deviations such as holidays or special schedule events, under the following headers:
 
-- Dates (can be a single date MM/DD/YYYY or a range MM/DD/YYYY-MM/DD/YYYY)
-- Description (unless (conversion) is specified, the script will create a full-day exception event, otherwise it will create a single event for each course on the specified date(s) with the course schedule converted to the specified day)
+- Dates (either a single MM/DD/YYYY entry or a range denoted by MM/DD/YYYY-MM/DD/YYYY)
+- Description (for full-day exceptions, a simple description suffices. When "(conversion)" appears, the script interprets this as an instruction for a schedule conversion to a specified day)
 
-Example:
+Exemplary Entry:
 ```
 Dates,Description
 07/04/2023,Independence Day
-1/28/2023, Monday Schedule (Conversion)
+01/28/2023,Monday Schedule (Conversion)
 ```
 
-## Features
-- Customizable logging (found in `calendar_creator.log`).
-- Ability to handle a range of dates for exceptions.
-- Day conversion ability (e.g., Tuesday schedule on a Monday).
-- Generation of full-day exceptions.
-- Consolidation of all course and exception events into a single iCalendar file.
+## Feature Highlights
+- Logs are custom-tailored for various verbosity levels, accessible within `calendar_creator.log`.
+- Support for multiple dates within exception entries.
+- Implements day conversion (e.g., a Tuesday adopting a Monday's schedule).
+- Introduces full-day exceptions when required.
+- Condenses all individual course and exception events into a singular, neat iCalendar file.
 
-## Output
-The script will generate the following output:
-- `output/combined_calendar.ics`: A combined iCalendar file containing all the course events and exceptions.
+## Output Synopsis
+Upon culmination, the application dispenses the output in the form of:
+- `output/combined_calendar.ics`: The synthesized iCalendar file embedding both course occurrences and exceptions.
 
-## Logging
-The script logs informational and debugging messages, including errors during processing, to `calendar_creator.log`.
+## Logging Insights
+The application diligently records a broad gamut of messages, such as informational, debugging, and errors encountered during its operational lifecycle, into the `calendar_creator.log`.
 
-## Functions
-- `read_csv(file_name)`: Reads the CSV file and returns a list of dictionaries, one for each row.
-- `create_standard_week(courses)`: Creates a dictionary mapping weekdays to course schedules.
-- `add_event_to_calendar(cal, course, date)`: Adds a single course event to the calendar.
-- `add_full_day_event_to_calendar(cal, date, description, summary)`: Adds a full-day exception event.
+## Functional Descriptors
+- `read_csv(file_name)`: Intakes a CSV file, returning an assembly of row-wise dictionaries.
+- `create_standard_week(courses)`: Engineering a day-to-course mapping dictionary from the input courses array.
+- `add_event_to_calendar(cal, course, date)`: Methodology for registering a singular course event onto the calendar.
+- `add_full_day_event_to_calendar(cal, date, description, summary)`: The apparatus for instituting a full-day exception event.
 
-## Contributing
-To contribute to this project, please create a pull request or open an issue on the project's repository. Contributions should follow good coding practices and include appropriate documentation updates.
+**Collaboration Protocol**
 
-## Contact
-For issues, suggestions, or contributions, please contact the repository maintainer or use the issue tracker associated with the project.
+Contributions to the Calendar Creator project are welcome through pull requests and issue reporting.
 
-## License
-This project is licensed under the terms of the MIT license.
+**Communication Channel**
 
-## Disclaimer
-This software is provided “as is”, without warranty of any kind. Users should test the software thoroughly before relying on it. The author(s) shall not be liable for any damages resulting from the use of the software.
+For inquiries regarding operational matters, innovative propositions, or potential contributions, kindly contact the repository maintainer. As an alternative, the project's issue tracker is available for more extensive dialogues.
+
+**Licensing Details**
+
+The Calendar Creator project is disseminated under an open-source license exclusively for personal utilization. Commercial entities are authorized to employ, adapt, and disseminate the software solely with explicit consent from the author.
+
+**Disclaimer**
+
+The Calendar Creator software is provided on an "as is" basis, without any form of warranty or assurance, either expressed or implied. Users are advised to perform comprehensive testing prior to deploying or relying upon the software in any critical capacity. Under no circumstances shall the authors be liable for any damages, losses, or liabilities incurred as a result of using or the inability to use the software.

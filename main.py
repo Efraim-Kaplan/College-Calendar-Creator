@@ -32,7 +32,7 @@ def read_csv(file_name):
                 else:
                     rows.append(row)
     except Exception as e:
-        print(f"Error reading {file_name}: {e}")
+        logging.error(f"Error reading {file_name}: {e}")
     return rows
 
 def create_standard_week(courses):
@@ -154,15 +154,15 @@ def main():
     for course_code, cal in course_cals.items():
         for component in cal.walk():
             combined_cal.add_component(component)
-        print(f"Calendar for {course_code} added to combined calendar.")
+        logging.debug(f"Calendar for {course_code} added to combined calendar.")
 
     for component in exception_cal.walk():
         combined_cal.add_component(component)
-    print("Exceptions calendar added to combined calendar.")
+    logging.debug("Exceptions calendar added to combined calendar.")
 
     with open(os.path.join(output_folder, "combined_calendar.ics"), "wb") as f:
         f.write(combined_cal.to_ical())
-    print(f"Combined calendar saved in {output_folder}.")
+    logging.debug(f"Combined calendar saved in {output_folder}.")
 
 if __name__ == "__main__":
     main()

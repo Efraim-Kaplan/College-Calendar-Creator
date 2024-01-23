@@ -106,7 +106,7 @@ def main():
         current_day_abbr = current_date.strftime("%a")
 
         if exception_day:
-            if 'Conversion' in exception_day["Description"]:
+            if '(Conversion)' in exception_day["Description"]:
                 logging.debug(f"Conversion day found: {current_date}")
                 target_day_match = re.search(r'(\bMonday\b|\bTuesday\b|\bWednesday\b|\bThursday\b|\bFriday\b|\bSaturday\b|\bSunday\b) schedule', exception_day["Description"])
                 logging.debug(f"Target day match: {target_day_match}")

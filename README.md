@@ -1,69 +1,90 @@
-# Academic Calendar Generator Documentation
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Dependencies](#dependencies)
-3. [Input Files](#input-files)
-4. [Script Structure and Functions](#script-structure-and-functions)
-5. [Running the Script](#running-the-script)
-6. [Output](#output)
-7. [Logging](#logging)
+# Calendar Creator README
 
 ## Overview
+Calendar Creator is a Python application that generates an iCalendar (.ics) file from course schedules and exception dates provided in CSV format. It is designed for educational institutions to ease the process of calendar event management for course schedules, including handling exceptions such as holidays or special events.
 
-This Python script generates a comprehensive academic calendar in iCal format (.ics), suitable for importing into various calendar applications. It efficiently processes course schedules and exceptions (like holidays or special events), handling complex scenarios like date ranges and schedule conversions.
+## System Requirements
+- Python 3.x
+- `icalendar` library
 
-## Dependencies
-
-- `icalendar`: For creating iCal format files.
-- `datetime`: For date and time operations.
-- `csv`: To read CSV input files.
-- `re`: For regular expression operations.
-- `os`: For directory and file operations.
-- `logging`: For logging script activities and issues.
-
-## Input Files
-
-### `courses.csv`
-
-Contains details for each course with columns like `Course Code`, `Course Title`, `Days`, `Start Time`, `End Time`, `Start Date`, `End Date`, `Room`, and `Instructor`.
-
-### `exceptions.csv`
-
-Lists exceptions with `Type`, `Dates` (single or range), and `Description`. Conversion days should include the target day within the description (e.g., "Conversion to Monday schedule").
-
-## Script Structure and Functions
-
-- **`read_csv(file_name)`:** Reads CSV files and processes date ranges in `exceptions.csv`.
-- **`create_standard_week(courses)`:** Forms a standard week schedule from course data.
-- **`add_event_to_calendar(cal, course, date)`:** Adds individual course events to the calendar.
-- **`add_full_day_event_to_calendar(cal, date, description, summary)`:** Adds full-day events for exceptions.
-- **`main()`:** Orchestrates the calendar creation process, handling standard courses and exceptions, including conversion days, and outputs the final combined calendar.
-
-### Calendar Creation Process
-
-1. **Data Import:** Reads `courses.csv` and `exceptions.csv`.
-2. **Standard Week Setup:** Forms a weekly schedule template.
-3. **Exception Handling:** Processes exceptions, including conversion days.
-4. **Calendar Assembly:** Compiles individual course calendars and the exceptions calendar into a combined calendar.
-5. **File Output:** Saves the combined calendar in iCal format.
-
-## Running the Script
-
-To execute the script, run:
+## Installation
+Ensure that Python 3.x is installed on your system. If you do not have the `icalendar` library installed, you can install it using pip:
 
 ```bash
-python your_script_name.py
+pip install icalendar
 ```
 
-## Output
+## Usage
+1. Prepare your CSV files: `courses.csv` and `exceptions.csv`. Place them in the same directory as the script.
+2. Run the script:
+```bash
+python calendar_creator.py
+```
+3. The script will generate an `output` directory that contains the `combined_calendar.ics` file.
 
-- The script generates an `output` directory containing the `combined_calendar.ics` file, which integrates all course schedules and exceptions.
-- Individual calendars for each course are also created and integrated into the combined calendar.
+## Input CSV File Format
+
+### Courses CSV (`courses.csv`)
+This CSV file should contain the course schedule with the following headers:
+
+- Course Code
+- Course Title
+- Start Date (MM/DD/YYYY)
+- End Date (MM/DD/YYYY)
+- Days (e.g., Monday, Tuesday, Wednesday)
+- Start Time (HH:MM AM/PM)
+- End Time (HH:MM AM/PM)
+- Instructor
+- Room
+
+Example:
+```
+| Course Code | Course Title | Start Date  | End Date    | Days       | Start Time | End Time   | Instructor | Room |
+|-------------|--------------|-------------|-------------|------------|------------|------------|------------|------|
+| MATH101     | Calculus I   | 01/15/2023  | 05/25/2023  | Monday, Wednesday, Friday   | 09:00 AM   | 10:30 AM   | Jane Doe   | 101  |
+```
+
+### Exceptions CSV (`exceptions.csv`)
+This CSV file should contain exception dates such as holidays or non-standard class schedules with the following headers:
+
+- Dates (can be a single date MM/DD/YYYY or a range MM/DD/YYYY-MM/DD/YYYY)
+- Description (unless (conversion) is specified, the script will create a full-day exception event, otherwise it will create a single event for each course on the specified date(s) with the course schedule converted to the specified day)
+
+Example:
+```
+Dates,Description
+07/04/2023,Independence Day
+1/28/2023, Monday Schedule (Conversion)
+```
+
+## Features
+- Customizable logging (found in `calendar_creator.log`).
+- Ability to handle a range of dates for exceptions.
+- Day conversion ability (e.g., Tuesday schedule on a Monday).
+- Generation of full-day exceptions.
+- Consolidation of all course and exception events into a single iCalendar file.
+
+## Output
+The script will generate the following output:
+- `output/combined_calendar.ics`: A combined iCalendar file containing all the course events and exceptions.
 
 ## Logging
+The script logs informational and debugging messages, including errors during processing, to `calendar_creator.log`.
 
-- The script logs all major steps and issues in `calendar_creator.log`, aiding in troubleshooting and ensuring transparency in the process.
+## Functions
+- `read_csv(file_name)`: Reads the CSV file and returns a list of dictionaries, one for each row.
+- `create_standard_week(courses)`: Creates a dictionary mapping weekdays to course schedules.
+- `add_event_to_calendar(cal, course, date)`: Adds a single course event to the calendar.
+- `add_full_day_event_to_calendar(cal, date, description, summary)`: Adds a full-day exception event.
 
-This documentation should provide clear guidance on the usage and inner workings of the Academic Calendar Generator script. Feel free to reach out if you encounter any issues or require further assistance.
+## Contributing
+To contribute to this project, please create a pull request or open an issue on the project's repository. Contributions should follow good coding practices and include appropriate documentation updates.
+
+## Contact
+For issues, suggestions, or contributions, please contact the repository maintainer or use the issue tracker associated with the project.
+
+## License
+This project is licensed under the terms of the MIT license.
+
+## Disclaimer
+This software is provided “as is”, without warranty of any kind. Users should test the software thoroughly before relying on it. The author(s) shall not be liable for any damages resulting from the use of the software.

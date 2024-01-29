@@ -63,7 +63,12 @@ def add_event_to_calendar(cal, course, date):
         ),
     )
     event.add("location", course["Room"])
-    event.add("description", f"Instructor: {course['Instructor']}")
+    if (course["Zoom Link"] != ""):
+        event.add("description", f"Instructor: {course['Instructor']}\nZoom Link: {course['Zoom Link']}")
+        logging.debug(f"Zoom link added to {course['Course Code']} event.")
+    else:
+        event.add("description", f"Instructor: {course['Instructor']}")
+        logging.debug(f"No Zoom link found for {course['Course Code']} event.")
     cal.add_component(event)
 
 def add_full_day_event_to_calendar(cal, date, description, summary):

@@ -66,7 +66,6 @@ def add_event_to_calendar(cal, course, date):
     event.add("description", f"Instructor: {course['Instructor']}")
     cal.add_component(event)
 
-
 def add_full_day_event_to_calendar(cal, date, description, summary):
     event = Event()
     event.add("summary", summary)
@@ -76,7 +75,6 @@ def add_full_day_event_to_calendar(cal, date, description, summary):
     event["dtstart"].params["VALUE"] = "DATE"
     event["dtend"].params["VALUE"] = "DATE"
     cal.add_component(event)
-
 
 def main():
     courses = read_csv("courses.csv")
